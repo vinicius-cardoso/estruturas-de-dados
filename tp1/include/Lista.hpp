@@ -83,6 +83,7 @@ class Lista {
     T *GetItem(int pos);
     void SetItem(T item, int pos);
     void Inserir(T item);
+    Lista<T> Ordenar(Lista<T> lista);
     void RemoveInicio();
     void RemoveFinal();
     void RemovePosicao(int pos);

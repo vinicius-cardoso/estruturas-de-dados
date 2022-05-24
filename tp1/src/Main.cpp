@@ -38,7 +38,6 @@ int main() {
         for (int j = 1; j <= numero_de_jogadores; j++) {
             string nome_jogador;
             int valor_aposta;
-            Lista<Carta> mao;
             string jogada;
 
             arquivo >> nome_jogador >> valor_aposta;
@@ -52,14 +51,20 @@ int main() {
                 string carta;
                 arquivo >> carta;
 
-                cout << carta << " ";
+                // cout << carta << " ";
 
                 jogadores.GetItem(j)->AdicionarCarta(carta);
+                cout << jogadores.GetItem(j)->GetMao().GetItem(k)->GetCarta() << endl;
             }
 
-            mao = jogadores.GetItem(j)->GetMao();
+            Lista<Carta> *mao = new Lista<Carta>();
 
-            jogada = AvaliarMao(mao);
+            *mao = jogadores.GetItem(j)->GetMao();
+
+            cout << "Tamanho: " << mao->GetTamanho() << endl;
+            // jogadores.GetItem(j)->Imprimir();
+
+            // jogada = AvaliarMao(mao);
 
             // cout << endl;
         }
