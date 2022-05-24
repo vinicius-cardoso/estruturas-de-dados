@@ -22,6 +22,7 @@ class Jogador {
 
     void AdicionarCarta(string carta);
     Lista<Carta> GetMao();
+    void Imprimir();
 };
 
 Jogador::Jogador() {
@@ -37,10 +38,27 @@ Jogador::Jogador(string nome, int dinheiro, int valor_aposta) {
 
 void Jogador::AdicionarCarta(string carta) {
     mao.Inserir(Carta(carta));
+
+    if (mao.GetTamanho() == 5) {
+        Lista<Carta> *aux = new Lista<Carta>;
+
+        for (int i = 0; i < 4; i++) {
+            if (mao.GetItem(i) < mao.GetItem(i + 1)) {
+                aux->SetItem(*mao.GetItem(i), i);      // aux = mao[i]
+                mao.SetItem(*mao.GetItem(i + 1), i);   // mao[i] = mao[i + 1]
+                mao.SetItem(*aux->GetItem(i), i + 1);  // mao[i + 1] = aux
+            }
+        }
+    }
 }
 
 Lista<Carta> Jogador::GetMao() {
     return mao;
+}
+
+void Jogador::Imprimir() {
+    for (int i = 0; i < 5; i++)
+        cout << mao.GetItem(i)->GetCarta() << endl;
 }
 
 #endif
