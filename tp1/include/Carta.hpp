@@ -22,9 +22,9 @@ class Carta {
 };
 
 Carta::Carta() {
-    this->carta = "";
-    this->naipe = ' ';
-    this->valor = 0;
+    carta = "NULL";
+    naipe = 'Z';
+    valor = 0;
 }
 
 Carta::Carta(string carta) {
