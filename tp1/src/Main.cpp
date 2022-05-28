@@ -38,16 +38,14 @@ int main() {
             }
 
             Lista<Carta> *mao = new Lista<Carta>();
-
             *mao = jogadores.GetItem(j)->GetMao();
-
-            cout << "Tamanho: " << mao->GetTamanho() << endl;
-            // jogadores.GetItem(j)->Imprimir();
 
             // jogada = AvaliarMao(mao);
 
             // cout << endl;
         }
+
+        jogadores.Limpa();
     }
 
     return 0;

@@ -19,6 +19,7 @@ class Carta {
     int GetValor();
     char GetNaipe();
     string GetCarta();
+    void PrintCarta();
 };
 
 Carta::Carta() {
@@ -44,6 +45,10 @@ char Carta::GetNaipe() {
 
 string Carta::GetCarta() {
     return this->carta;
+}
+
+void Carta::PrintCarta() {
+    cout << "Carta: " << GetCarta() << endl;
 }
 
 #endif

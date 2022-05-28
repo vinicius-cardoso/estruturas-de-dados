@@ -42,7 +42,9 @@ string Jogador::GetNome() {
 }
 
 void Jogador::AdicionarCarta(string carta) {
-    mao.Inserir(Carta(carta));
+    Carta *carta_obj = new Carta(carta);
+
+    mao.Inserir(Carta(*carta_obj));
 
     if (mao.GetTamanho() == 5) {
         Lista<Carta> *aux = new Lista<Carta>;
