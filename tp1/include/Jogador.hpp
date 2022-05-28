@@ -20,13 +20,14 @@ class Jogador {
     Jogador();
     Jogador(string nome, int dinheiro, int valor_aposta);
 
+    string GetNome();
     void AdicionarCarta(string carta);
     Lista<Carta> GetMao();
     void Imprimir();
 };
 
 Jogador::Jogador() {
-    this->nome = "";
+    this->nome = "NOME";
     this->dinheiro = 0;
 }
 
@@ -34,6 +35,10 @@ Jogador::Jogador(string nome, int dinheiro, int valor_aposta) {
     this->nome = nome;
     this->dinheiro = dinheiro;
     this->valor_aposta = valor_aposta;
+}
+
+string Jogador::GetNome() {
+    return this->nome;
 }
 
 void Jogador::AdicionarCarta(string carta) {
