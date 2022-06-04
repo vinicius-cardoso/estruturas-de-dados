@@ -11,7 +11,7 @@ int main() {
     string nome_jogador, jogada, carta;
     Jogador *jogadores;
 
-    ifstream arquivo("entrada.txt");
+    ifstream arquivo("entrada2.txt");
 
     arquivo >> numero_de_rodadas >> dinheiro_inicial;
 
@@ -28,6 +28,9 @@ int main() {
 
                 jogadores[j].AdicionarCarta(carta);
             }
+
+            cout << "Jogador " << j << ": ";
+            cout << jogadores[j].GetMao() << endl;
 
             jogadores[j].ImprimirMao();
         }
