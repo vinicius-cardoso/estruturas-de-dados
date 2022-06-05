@@ -26,6 +26,7 @@ class Jogador {
     string GetNome();
     void SetDinheiro(int dinheiro);
     int GetDinheiro();
+    void Premiar(int premio);
     bool SetAposta(int aposta);
     void SetValorMao(string valor_mao);
     int GetValorMao();
@@ -59,18 +60,23 @@ void Jogador::SetDinheiro(int dinheiro) {
     this->dinheiro = dinheiro;
 }
 
+void Jogador::Premiar(int premio) {
+    this->dinheiro += premio;
+}
+
 int Jogador::GetDinheiro() {
     return this->dinheiro;
 }
 
 bool Jogador::SetAposta(int aposta) {
     this->valor_aposta = aposta;
-    this->dinheiro -= this->valor_aposta;
 
-    bool condicao;
-    condicao = this->dinheiro < 0 ? false : true;
-
-    return condicao;
+    if ((this->dinheiro - this->valor_aposta) < 0)
+        return false;
+    else {
+        this->dinheiro -= this->valor_aposta;
+        return true;
+    }
 }
 
 void Jogador::SetValorMao(string valor_mao) {

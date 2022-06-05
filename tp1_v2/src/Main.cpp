@@ -90,38 +90,56 @@ int main() {
     string valor_mao;
     string nome_vencedor, jogada_vencedor;
     bool invalida = false;
+
     Jogador *jogadores, vencedor, *vencedores;
+    jogadores = new Jogador[numero_de_jogadores + 1];
+    // vencedores = new Jogador[numero_de_jogadores + 1];
 
-    ifstream arquivo("entrada.txt");
+    ifstream arquivo_entrada("entrada.txt");
+    ofstream arquivo_saida("saida.txt");
 
-    arquivo >> numero_de_rodadas >> dinheiro_inicial;
+    arquivo_entrada >> numero_de_rodadas >> dinheiro_inicial;
+
+    int numero_total_jogadores = 0;
 
     for (int i = 0; i < numero_de_rodadas; i++) {
         pote = 0;
         int numero_de_vencedores = 0;
 
-        arquivo >> numero_de_jogadores >> valor_do_pingo;
+        arquivo_entrada >> numero_de_jogadores >> valor_do_pingo;
 
-        jogadores = new Jogador[numero_de_jogadores + 1];
+        if (i == 0)
+            numero_total_jogadores = numero_de_jogadores;
+
+        // jogadores = new Jogador[numero_de_jogadores + 1];
         vencedores = new Jogador[numero_de_jogadores + 1];
 
         for (int j = 0; j < numero_de_jogadores; j++) {
-            arquivo >> nome_jogador >> valor_aposta;
+            arquivo_entrada >> nome_jogador >> valor_aposta;
 
             jogadores[j].SetNome(nome_jogador);
             jogadores[j].SetDinheiro(dinheiro_inicial);
-            invalida = jogadores[j].SetAposta(valor_aposta + valor_do_pingo);  // se o jogador apostar o que nao tem, a rodada eh invalidade
+
+            // se o jogador apostar o que nao tem, a rodada eh invalidade
+            invalida = jogadores[j].SetAposta(valor_aposta + valor_do_pingo);
+
+            // if (invalida == true) {
+            //     cout << "0 "
+            //          << "0 "
+            //          << "I" << endl;
+            //     break;
+            // }
 
             pote += valor_aposta + valor_do_pingo;
 
             for (int k = 0; k < 5; k++) {
-                arquivo >> carta;
+                arquivo_entrada >> carta;
 
                 jogadores[j].AdicionarCarta(carta);
             }
 
             valor_mao = jogadores[j].GetMao()[0];
-            // cout << valor_mao << endl;
+            // arquivo_saida << valor_mao << endl;
             jogadores[j].SetValorMao(valor_mao);
         }
 
@@ -132,21 +150,35 @@ int main() {
 
             nome_vencedor = vencedor.GetNome();
             jogada_vencedor = vencedor.GetMao()[0];
-            cout << numero_de_vencedores << " " << jogada_vencedor << endl;
+            vencedor.Premiar(pote);
+            cout << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
             cout << nome_vencedor << endl;
         } else {
             vencedores = GetVencedores(jogadores, numero_de_vencedores);
 
-            cout << numero_de_vencedores << " " << jogada_vencedor << " " << endl;
+            cout << numero_de_vencedores << " " << pote << " " << jogada_vencedor << " " << endl;
+
+            int premio = pote / numero_de_vencedores;
 
             for (int i = 0; i < numero_de_vencedores; i++) {
                 cout << vencedores[i].GetNome() << " ";
+                vencedores[i].Premiar(premio);
             }
         }
 
         // toda rodada a mao do jogador sera diferente
         for (int l = 0; l < numero_de_jogadores; l++) {
             jogadores[l].LimparMao();
+        }
+
+        // ultima rodada
+        if (i == numero_de_rodadas - 1) {
+            cout << endl
+                 << "####" << endl;
+
+            for (int j = 0; j < numero_total_jogadores; j++) {
+                cout << jogadores[j].GetNome() << " " << jogadores[j].GetDinheiro() << endl;
+            }
         }
     }
 
