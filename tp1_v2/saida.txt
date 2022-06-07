@@ -5,3 +5,8 @@ Wagner Gisele
 1 800 F
 Gisele
 ####
+Thiago 650
+Gisele 800
+Giovanni 750
+ 0
+ 0
