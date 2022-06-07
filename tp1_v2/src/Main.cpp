@@ -94,6 +94,7 @@ int main() {
     Jogador *jogadores, vencedor, *vencedores;
 
     ifstream arquivo_entrada("entrada.txt");
+    ofstream arquivo_saida("saida.txt", ios::trunc);
 
     arquivo_entrada >> numero_de_rodadas >> dinheiro_inicial;
 
@@ -141,8 +142,10 @@ int main() {
             nome_vencedor = vencedor.GetNome();
             jogada_vencedor = vencedor.GetMao()[0];
             vencedor.Premiar(pote);
-            cout << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
-            cout << nome_vencedor << endl;
+            // cout << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
+            // cout << nome_vencedor << endl;
+            arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
+            arquivo_saida << nome_vencedor << endl;
         } else {
             vencedores = GetVencedores(jogadores, numero_de_vencedores);
 
@@ -158,10 +161,12 @@ int main() {
 
         // ultima rodada
         if (i == numero_de_rodadas - 1) {
-            cout << "####" << endl;
+            // cout << "####" << endl;
+            arquivo_saida << "####" << endl;
 
             for (int j = 0; j < numero_total_jogadores; j++) {
-                cout << jogadores[j].GetNome() << " " << jogadores[j].GetDinheiro() << endl;
+                // cout << jogadores[j].GetNome() << " " << jogadores[j].GetDinheiro() << endl;
+                arquivo_saida << jogadores[j].GetNome() << " " << jogadores[j].GetDinheiro() << endl;
             }
         }
     }
