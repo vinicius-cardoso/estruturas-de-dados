@@ -93,7 +93,6 @@ int main() {
 
     Jogador *jogadores, vencedor, *vencedores;
     jogadores = new Jogador[numero_de_jogadores + 1];
-    // vencedores = new Jogador[numero_de_jogadores + 1];
 
     ifstream arquivo_entrada("entrada.txt");
     ofstream arquivo_saida("saida.txt");
