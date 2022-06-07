@@ -1,12 +1,7 @@
 1 1000 S
 Gisele
-1 650 OP
-Wagner
+2 650 S 
+Wagner Gisele 
 1 800 F
 Gisele
 ####
-Thiago 650
-Gisele 800
-Giovanni 750
- 0
- 0
