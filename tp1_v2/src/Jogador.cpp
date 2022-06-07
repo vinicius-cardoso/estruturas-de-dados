@@ -210,8 +210,3 @@ string *Jogador::GetMao() {
 
     return detalhes_mao;
 }
-
-void Jogador::LimparMao() {
-    for (int i = 0; i < NUMERO_DE_CARTAS; i++)
-        mao[i].SetCarta("0Z");
-}

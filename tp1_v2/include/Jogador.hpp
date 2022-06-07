@@ -33,7 +33,6 @@ class Jogador {
     void Premiar(int premio);
     void AdicionarCarta(string _carta);
     void ImprimirMao();
-    void LimparMao();
 };
 
 #endif
