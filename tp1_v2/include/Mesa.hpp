@@ -31,10 +31,10 @@ class Mesa {
    public:
     Mesa();
 
-    void Partida();
+    void Partida(string nome_arquivo_entrada);
     int GetNrVencedores(Jogador *jogadores, int numero_jogadores);
     int GetVencedor(Jogador *jogadores, int numero_jogadores);
-    int *GetVencedores(Jogador *jogadores, int numero_vencedores);
+    int *GetVencedores(Jogador *jogadores, int numero_jogadores);
 };
 
 #endif
