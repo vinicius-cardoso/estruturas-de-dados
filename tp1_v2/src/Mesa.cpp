@@ -4,12 +4,12 @@ Mesa::Mesa() {
     this->invalida = false;
 }
 
-Jogador *Mesa::GetVencedores(Jogador *jogadores, int numero_de_vencedores) {
+int *Mesa::GetVencedores(Jogador *jogadores, int numero_de_vencedores) {
     int nr_vencedores = numero_de_vencedores;
     int maior = 1, indice = nr_vencedores - 1;
     int indice_aux = 0;
 
-    Jogador *empatados = new Jogador[nr_vencedores];
+    int *indices_empatados = new int[nr_vencedores];
 
     for (int i = 0; i < nr_vencedores; i++) {
         // armazena em indice o indice do jogador com a maior mao
@@ -24,16 +24,16 @@ Jogador *Mesa::GetVencedores(Jogador *jogadores, int numero_de_vencedores) {
                 // impossivel desempatar
             } else {
                 nr_vencedores++;
-                empatados[indice_aux] = jogadores[i];
+                indices_empatados[indice_aux] = i;
                 indice_aux++;
             }
         }
     }
 
-    return empatados;
+    return indices_empatados;
 }
 
-Jogador Mesa::GetVencedor(Jogador *jogadores, int numero_total_jogadores) {
+int Mesa::GetVencedor(Jogador *jogadores, int numero_total_jogadores) {
     int nr_jogadores = numero_total_jogadores;
     int maior = 1, indice = nr_jogadores - 1;
     int indice_aux = 0, nr_vencedores = 1;
@@ -51,7 +51,7 @@ Jogador Mesa::GetVencedor(Jogador *jogadores, int numero_total_jogadores) {
         }
     }
 
-    return jogadores[indice];
+    return indice;
 }
 
 int Mesa::GetNrVencedores(Jogador *jogadores, int numero_total_jogadores) {
@@ -90,8 +90,6 @@ void Mesa::Partida() {
     string valor_mao;
     string nome_vencedor, jogada_vencedor;
     bool invalida = false;
-
-    Jogador vencedor, *vencedores;
 
     ifstream arquivo_entrada("entrada.txt");
 
@@ -172,8 +170,13 @@ void Mesa::Partida() {
                     }
                 }
 
-                if (vezes == contador)
+                if (vezes == contador) {
+                    jogadores[m].SetAposta(valor_do_pingo);
+
+                    pote += valor_do_pingo;
+
                     jogadores[m].SetValorMao("NULL");
+                }
             }
         }
 
@@ -181,29 +184,34 @@ void Mesa::Partida() {
             jogadores[l].LimparMao();
         }
 
-        vencedores = new Jogador[numero_de_jogadores + 1];
         numero_de_vencedores = GetNrVencedores(jogadores, numero_total_jogadores);
 
         if (numero_de_vencedores == 1) {
-            vencedor = GetVencedor(jogadores, numero_total_jogadores);
+            int indice_vencedor = GetVencedor(jogadores, numero_total_jogadores);
 
-            nome_vencedor = vencedor.GetNome();
-            jogada_vencedor = vencedor.GetMao()[0];
-            vencedor.Premiar(pote);
+            nome_vencedor = jogadores[indice_vencedor].GetNome();
+            jogada_vencedor = jogadores[indice_vencedor].GetMao()[0];
+            jogadores[indice_vencedor].Premiar(pote);
 
             arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
             arquivo_saida << nome_vencedor << endl;
         } else {
-            vencedores = GetVencedores(jogadores, numero_de_vencedores);
+            int *indices_vencedores = GetVencedores(jogadores, numero_de_vencedores);
 
             arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << " " << endl;
 
             int premio = pote / numero_de_vencedores;
 
-            for (int i = 0; i < numero_de_vencedores; i++) {
-                arquivo_saida << vencedores[i].GetNome() << " ";
-                vencedores[i].Premiar(premio);
+            for (int i = 0; i < numero_total_jogadores; i++) {
+                for (int j = 0; j < numero_de_vencedores; j++) {
+                    if (i == indices_vencedores[j]) {
+                        arquivo_saida << jogadores[i].GetNome() << " ";
+                        jogadores[i].Premiar(premio);
+                    }
+                }
             }
+
+            delete[] indices_vencedores;
 
             arquivo_saida << endl;
         }
@@ -212,8 +220,31 @@ void Mesa::Partida() {
         if (i == numero_de_rodadas - 1) {
             arquivo_saida << "####" << endl;
 
-            for (int j = 0; j < numero_total_jogadores; j++) {
-                arquivo_saida << jogadores[j].GetNome() << " " << jogadores[j].GetDinheiro() << endl;
+            int saldos[numero_total_jogadores];
+            string nomes[numero_total_jogadores];
+
+            for (int i = 0; i < numero_total_jogadores; i++) {
+                saldos[i] = jogadores[i].GetDinheiro();
+                nomes[i] = jogadores[i].GetNome();
+            }
+
+            for (int i = 0; i < numero_total_jogadores - 1; i++) {
+                for (int j = 0; j < numero_total_jogadores - i - 1; j++) {
+                    if (saldos[j] > saldos[j + 1]) {
+                        int int_aux = saldos[j];
+                        string string_aux = jogadores[j].GetNome();
+
+                        saldos[j] = saldos[j + 1];
+                        nomes[j] = nomes[j + 1];
+
+                        saldos[j + 1] = int_aux;
+                        nomes[j + 1] = string_aux;
+                    }
+                }
+            }
+
+            for (int j = numero_total_jogadores - 1; j >= 0; j--) {
+                arquivo_saida << nomes[j] << " " << saldos[j] << endl;
             }
         }
     }

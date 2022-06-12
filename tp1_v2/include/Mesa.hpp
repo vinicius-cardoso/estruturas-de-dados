@@ -33,8 +33,8 @@ class Mesa {
 
     void Partida();
     int GetNrVencedores(Jogador *jogadores, int numero_jogadores);
-    Jogador GetVencedor(Jogador *jogadores, int numero_jogadores);
-    Jogador *GetVencedores(Jogador *jogadores, int numero_vencedores);
+    int GetVencedor(Jogador *jogadores, int numero_jogadores);
+    int *GetVencedores(Jogador *jogadores, int numero_vencedores);
 };
 
 #endif
