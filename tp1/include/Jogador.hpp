@@ -5,7 +5,8 @@
 #include <string>
 
 #include "Carta.hpp"
-#include "Lista.hpp"
+
+#define NUMERO_DE_CARTAS 5
 
 using namespace std;
 
@@ -14,58 +15,25 @@ class Jogador {
     string nome;
     int dinheiro;
     int valor_aposta;
-    Lista<Carta> mao;
+    int valor_mao;
+    Carta mao[NUMERO_DE_CARTAS];
 
    public:
     Jogador();
     Jogador(string nome, int dinheiro, int valor_aposta);
 
+    void SetNome(string nome);
     string GetNome();
-    void AdicionarCarta(string carta);
-    Lista<Carta> GetMao();
-    void Imprimir();
+    void SetDinheiro(int dinheiro);
+    int GetDinheiro();
+    bool SetAposta(int aposta);
+    void SetValorMao(string valor_mao);
+    int GetValorMao();
+    string *GetMao();
+    void Premiar(int premio);
+    void AdicionarCarta(string _carta);
+    void ImprimirMao();
+    void LimparMao();
 };
-
-Jogador::Jogador() {
-    this->nome = "NOME";
-    this->dinheiro = 0;
-}
-
-Jogador::Jogador(string nome, int dinheiro, int valor_aposta) {
-    this->nome = nome;
-    this->dinheiro = dinheiro;
-    this->valor_aposta = valor_aposta;
-}
-
-string Jogador::GetNome() {
-    return this->nome;
-}
-
-void Jogador::AdicionarCarta(string carta) {
-    Carta *carta_obj = new Carta(carta);
-
-    mao.Inserir(Carta(*carta_obj));
-
-    if (mao.GetTamanho() == 5) {
-        Lista<Carta> *aux = new Lista<Carta>;
-
-        for (int i = 0; i < 4; i++) {
-            if (mao.GetItem(i) < mao.GetItem(i + 1)) {
-                aux->SetItem(*mao.GetItem(i), i);      // aux = mao[i]
-                mao.SetItem(*mao.GetItem(i + 1), i);   // mao[i] = mao[i + 1]
-                mao.SetItem(*aux->GetItem(i), i + 1);  // mao[i + 1] = aux
-            }
-        }
-    }
-}
-
-Lista<Carta> Jogador::GetMao() {
-    return mao;
-}
-
-void Jogador::Imprimir() {
-    for (int i = 0; i < 5; i++)
-        cout << mao.GetItem(i)->GetCarta() << endl;
-}
 
 #endif
