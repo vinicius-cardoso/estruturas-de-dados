@@ -31,12 +31,16 @@ char Carta::GetNaipe() {
 }
 
 void Carta::SetCarta(string carta) {
-    string aux = carta;
-    this->carta = aux;
-    this->naipe = carta.back();  // back() retorna o ultimo elemento da string
-    carta.pop_back();            // pop_back() remove o ultimo elemento da string
+    if (carta == "VAZIO") {
+        this->carta = "VAZIO";
+    } else {
+        string aux = carta;
+        this->carta = aux;
+        this->naipe = carta.back();  // back() retorna o ultimo elemento da string
+        carta.pop_back();            // pop_back() remove o ultimo elemento da string
 
-    this->valor = stoi(carta);  // converte a string em int
+        this->valor = stoi(carta);  // converte a string em int
+    }
 }
 
 string Carta::GetCarta() {
