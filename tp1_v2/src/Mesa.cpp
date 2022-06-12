@@ -1,5 +1,7 @@
 #include "Mesa.hpp"
 
+#include "msgassert.hpp"
+
 Mesa::Mesa() {
     this->invalida = false;
 }
@@ -96,6 +98,7 @@ void Mesa::Partida(string nome_arquivo_entrada) {
     bool invalida = false;
 
     ifstream arquivo_entrada(nome_arquivo_entrada);
+    erroAssert(!arquivo_entrada.fail(), "Falha ao abrir o arquivo de entrada");
 
     // abre o arquivo em modo de sobreposicao (trunc)
     ofstream arquivo_saida("saida.txt", ios::trunc);
@@ -259,4 +262,7 @@ void Mesa::Partida(string nome_arquivo_entrada) {
             }
         }
     }
+
+    arquivo_entrada.close();
+    arquivo_saida.close();
 }
