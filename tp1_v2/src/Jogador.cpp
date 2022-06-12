@@ -66,6 +66,8 @@ void Jogador::SetValorMao(string valor_mao) {
         this->valor_mao = 9;
     else if (valor_mao == "RSF")
         this->valor_mao = 10;
+    else
+        this->valor_mao = 0;
 }
 
 int Jogador::GetValorMao() {
@@ -101,6 +103,12 @@ void Jogador::ImprimirMao() {
     }
 
     cout << endl;
+}
+
+void Jogador::LimparMao() {
+    for (int i = 0; i < NUMERO_DE_CARTAS; i++) {
+        mao[i].SetCarta("VAZIO");
+    }
 }
 
 string *Jogador::GetMao() {
