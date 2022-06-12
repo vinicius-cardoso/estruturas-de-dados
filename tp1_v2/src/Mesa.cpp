@@ -4,28 +4,32 @@ Mesa::Mesa() {
     this->invalida = false;
 }
 
-int *Mesa::GetVencedores(Jogador *jogadores, int numero_de_vencedores) {
-    int nr_vencedores = numero_de_vencedores;
-    int maior = 1, indice = nr_vencedores - 1;
+int *Mesa::GetVencedores(Jogador *jogadores, int numero_total_jogadores) {
+    int nr_jogadores = numero_total_jogadores;
+    int maior = 1, indice = nr_jogadores - 1;
     int indice_aux = 0;
 
-    int *indices_empatados = new int[nr_vencedores];
+    int *indices_empatados = new int[nr_jogadores];
 
-    for (int i = 0; i < nr_vencedores; i++) {
-        // armazena em indice o indice do jogador com a maior mao
-        if (jogadores[i].GetValorMao() > maior) {
-            maior = jogadores[i].GetValorMao();
-            indice = i;
-            // se ha 2 jogadores com valor da mao igual, realiza o desempate
-        } else if (jogadores[i].GetValorMao() == maior) {
-            // desempate a partir da maior carta
-            if (jogadores[i].GetMao()[1] > jogadores[indice].GetMao()[1]) {
+    for (int i = 0; i < 5; i++) {
+        if (jogadores[i].GetValorMao() != 0) {
+            // armazena em indice o indice do jogador com a maior mao
+            if (jogadores[i].GetValorMao() > maior) {
+                maior = jogadores[i].GetValorMao();
                 indice = i;
-                // impossivel desempatar
-            } else {
-                nr_vencedores++;
-                indices_empatados[indice_aux] = i;
+                indices_empatados[indice_aux] = indice;
                 indice_aux++;
+                // se ha 2 jogadores com valor da mao igual, realiza o desempate
+            } else if (jogadores[i].GetValorMao() == maior) {
+                // desempate a partir da maior carta
+                if (jogadores[i].GetMao()[1] > jogadores[indice].GetMao()[1]) {
+                    indice = i;
+                    // impossivel desempatar
+                } else {
+                    indice = i;
+                    indices_empatados[indice_aux] = indice;
+                    indice_aux++;
+                }
             }
         }
     }
@@ -36,7 +40,7 @@ int *Mesa::GetVencedores(Jogador *jogadores, int numero_de_vencedores) {
 int Mesa::GetVencedor(Jogador *jogadores, int numero_total_jogadores) {
     int nr_jogadores = numero_total_jogadores;
     int maior = 1, indice = nr_jogadores - 1;
-    int indice_aux = 0, nr_vencedores = 1;
+    int indice_aux = 0;
 
     for (int i = 0; i < nr_jogadores; i++) {
         // armazena em indice o indice do jogador com a maior mao
@@ -82,7 +86,7 @@ int Mesa::GetNrVencedores(Jogador *jogadores, int numero_total_jogadores) {
     return nr_vencedores;
 }
 
-void Mesa::Partida() {
+void Mesa::Partida(string nome_arquivo_entrada) {
     int numero_de_rodadas, dinheiro_inicial;
     int numero_de_jogadores, valor_do_pingo;
     int valor_aposta, pote;
@@ -91,7 +95,7 @@ void Mesa::Partida() {
     string nome_vencedor, jogada_vencedor;
     bool invalida = false;
 
-    ifstream arquivo_entrada("entrada.txt");
+    ifstream arquivo_entrada(nome_arquivo_entrada);
 
     // abre o arquivo em modo de sobreposicao (trunc)
     ofstream arquivo_saida("saida.txt", ios::trunc);
@@ -103,7 +107,6 @@ void Mesa::Partida() {
     Jogador *jogadores = new Jogador[numero_total_jogadores + 1]();
 
     for (int i = 0; i < numero_de_rodadas; i++) {
-        cout << endl;
         pote = 0;
         int numero_de_vencedores = 0;
 
@@ -116,6 +119,10 @@ void Mesa::Partida() {
 
                 // se o jogador apostar o que nao tem, a rodada eh invalidade
                 invalida = jogadores[j].SetAposta(valor_aposta + valor_do_pingo);
+
+                if (invalida == true) {
+                    arquivo_saida << "0 0 I" << endl;
+                }
 
                 pote += valor_aposta + valor_do_pingo;
 
@@ -187,31 +194,35 @@ void Mesa::Partida() {
         numero_de_vencedores = GetNrVencedores(jogadores, numero_total_jogadores);
 
         if (numero_de_vencedores == 1) {
-            int indice_vencedor = GetVencedor(jogadores, numero_total_jogadores);
+            if (!invalida) {
+                int indice_vencedor = GetVencedor(jogadores, numero_total_jogadores);
+                nome_vencedor = jogadores[indice_vencedor].GetNome();
+                jogada_vencedor = jogadores[indice_vencedor].GetMao()[0];
+                jogadores[indice_vencedor].Premiar(pote);
 
-            nome_vencedor = jogadores[indice_vencedor].GetNome();
-            jogada_vencedor = jogadores[indice_vencedor].GetMao()[0];
-            jogadores[indice_vencedor].Premiar(pote);
-
-            arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
-            arquivo_saida << nome_vencedor << endl;
+                arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << endl;
+                arquivo_saida << nome_vencedor << endl;
+            }
         } else {
-            int *indices_vencedores = GetVencedores(jogadores, numero_de_vencedores);
+            if (!invalida) {
+                int *indices_vencedores = GetVencedores(jogadores, numero_total_jogadores);
+                jogada_vencedor = jogadores[indices_vencedores[0]].GetMao()[0];
 
-            arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << " " << endl;
+                arquivo_saida << numero_de_vencedores << " " << pote << " " << jogada_vencedor << " " << endl;
 
-            int premio = pote / numero_de_vencedores;
+                int premio = pote / numero_de_vencedores;
 
-            for (int i = 0; i < numero_total_jogadores; i++) {
-                for (int j = 0; j < numero_de_vencedores; j++) {
-                    if (i == indices_vencedores[j]) {
-                        arquivo_saida << jogadores[i].GetNome() << " ";
-                        jogadores[i].Premiar(premio);
+                for (int i = 0; i < numero_total_jogadores; i++) {
+                    for (int j = 0; j < numero_de_vencedores; j++) {
+                        if (i == indices_vencedores[j]) {
+                            arquivo_saida << jogadores[i].GetNome() << " ";
+                            jogadores[i].Premiar(premio);
+                        }
                     }
                 }
-            }
 
-            delete[] indices_vencedores;
+                delete[] indices_vencedores;
+            }
 
             arquivo_saida << endl;
         }

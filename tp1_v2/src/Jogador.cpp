@@ -38,10 +38,10 @@ bool Jogador::SetAposta(int aposta) {
     this->valor_aposta = aposta;
 
     if ((this->dinheiro - this->valor_aposta) < 0)
-        return false;
+        return true;
     else {
         this->dinheiro -= this->valor_aposta;
-        return true;
+        return false;
     }
 }
 
