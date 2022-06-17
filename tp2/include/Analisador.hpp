@@ -12,7 +12,6 @@ using namespace std;
 
 class Analisador {
    public:
-    Analisador();
     void Analisar(string nome_arq_entrada);
 };
 
