@@ -8,17 +8,18 @@ using namespace std;
 class Palavra {
    private:
     string palavra;
-    int tamanho;
+    int frequencia;
+    Palavra *proximo = nullptr;
 
    public:
-    Palavra();
-
     void SetPalavra(string palavra);
     string GetPalavra();
-    void SetTamanho(int tamanho);
-    int GetTamanho();
-    void ImprimePalavras();
-    string OrdenarPalavras();
+    void SetFrequencia(int frequencia);
+    int GetFrequencia();
+    bool PalavraMaiorQue(Palavra *palavra);
+    bool FrequenciaMaiorQue(Palavra *palavra);
+
+    friend class ListaEncadeada;
 };
 
 #endif
