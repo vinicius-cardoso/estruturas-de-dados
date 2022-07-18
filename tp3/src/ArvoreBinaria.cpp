@@ -27,6 +27,8 @@ void ArvoreBinaria::InserirRecursivo(Email *&p, Email *email) {
 
 void ArvoreBinaria::Inserir(Email *email) {
     InserirRecursivo(raiz, email);
+
+    tamanho++;
 }
 
 int ArvoreBinaria::Pesquisar(int chave) {

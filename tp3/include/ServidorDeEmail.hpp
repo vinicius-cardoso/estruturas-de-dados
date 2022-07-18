@@ -18,12 +18,14 @@ class ServidorDeEmail {
     // ArvoreBinaria Tabela[5];
 
    public:
-    ServidorDeEmail();
+    ServidorDeEmail(int tamanho_tabela);
 
-    void Iniciar(string nome_arquivo_entrada, string nome_arquivo_saida);
+    // void Iniciar(string nome_arquivo_entrada, string nome_arquivo_saida);
+    void Iniciar(ifstream &arquivo_entrada, ofstream &arquivo_saida);
     void Entrega(int id_destinatario, int id_email, string mensagem, ArvoreBinaria *Tabela);
-    void Inserir(Email *email, ArvoreBinaria *Tabela);
+    void Inserir(Email *email, ArvoreBinaria *Tabela, int id_destinatario);
     int Pesquisar(int chave, ArvoreBinaria *Tabela);
+    void Imprime(ArvoreBinaria *Tabela, int tamanho);
 };
 
 // class Hash_LE {

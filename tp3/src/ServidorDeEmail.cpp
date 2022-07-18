@@ -1,7 +1,7 @@
 #include "ServidorDeEmail.hpp"
 
-ServidorDeEmail::ServidorDeEmail() {
-    tamanho_tabela = 0;
+ServidorDeEmail::ServidorDeEmail(int tamanho_tabela) {
+    this->tamanho_tabela = tamanho_tabela;
 }
 
 int ServidorDeEmail::Hash(int chave) {
@@ -18,35 +18,38 @@ int ServidorDeEmail::Pesquisar(int chave, ArvoreBinaria *Tabela) {
     return item;
 }
 
-void ServidorDeEmail::Inserir(Email *email, ArvoreBinaria *Tabela) {
+void ServidorDeEmail::Inserir(Email *email, ArvoreBinaria *Tabela, int id_destinatario) {
     int aux;
     int pos;
 
-    aux = Pesquisar(email->GetId(), Tabela);
+    aux = Pesquisar(id_destinatario, Tabela);
 
     if (aux != -1)
         throw("Erro: item ja esta presente");
 
-    pos = Hash(email->GetId());
+    pos = Hash(id_destinatario);
 
     Tabela[pos].Inserir(email);
 }
 
-void ServidorDeEmail::Iniciar(string nome_arquivo_entrada, string nome_arquivo_saida) {
-    ifstream arquivo_entrada(nome_arquivo_entrada);
-    erroAssert(!arquivo_entrada.fail(), "Falha ao abrir o arquivo de entrada");
+void ServidorDeEmail::Imprime(ArvoreBinaria *Tabela, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        if (Tabela[i].IsVazia())
+            cout << i << ": vazia" << endl;
+        else {
+            cout << i << ": ";
+            Tabela[i].Caminha(2);
+        }
+    }
+}
 
-    // abre o arquivo em modo de sobreposicao (trunc)
-    ofstream arquivo_saida(nome_arquivo_saida, ios::trunc);
-
+void ServidorDeEmail::Iniciar(ifstream &arquivo_entrada, ofstream &arquivo_saida) {
     string linha;
     string operacao;
 
     int id_destinatario;
     int id_email;
     int nr_palavras;
-
-    arquivo_entrada >> tamanho_tabela;
 
     ArvoreBinaria *Tabela = new ArvoreBinaria[tamanho_tabela];
 
@@ -73,10 +76,12 @@ void ServidorDeEmail::Iniciar(string nome_arquivo_entrada, string nome_arquivo_s
             Entrega(id_destinatario, id_email, mensagem, Tabela);
         }
     }
+
+    Imprime(Tabela, tamanho_tabela);
 }
 
 void ServidorDeEmail::Entrega(int id_destinatario, int id_email, string mensagem, ArvoreBinaria *Tabela) {
-    Email *email = new Email(id_destinatario, mensagem);
+    Email *email = new Email(id_email, mensagem);
 
-    Tabela->Inserir(email);
+    Inserir(email, Tabela, id_destinatario);
 }
