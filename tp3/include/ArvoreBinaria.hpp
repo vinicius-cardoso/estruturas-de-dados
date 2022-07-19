@@ -1,10 +1,6 @@
 #ifndef ARVORE_BINARIA_H
 #define ARVORE_BINARIA_H
 
-#define PRE_ORDEM 1
-#define IN_ORDEM 2
-#define POS_ORDEM 3
-
 #include <iostream>
 
 #include "Email.hpp"
@@ -18,7 +14,9 @@ class ArvoreBinaria {
 
     void InserirRecursivo(Email *&p, Email *email);
     void RemoverRecursivo(Email *p);
+    bool ApagarRecursivo(Email *&p, int chave);
     int PesquisarRecursivo(Email *&p, int chave);
+    string PesquisarEmailRecursivo(Email *&p, int chave, int destinatario);
 
    public:
     ArvoreBinaria();
@@ -26,11 +24,10 @@ class ArvoreBinaria {
 
     bool IsVazia();
     void Inserir(Email *email);
+    bool Apagar(int chave);
     int Pesquisar(int chave);
-    void Caminha(int tipo);
-    void PreOrdem(Email *p);
-    void InOrdem(Email *p);
-    void PosOrdem(Email *p);
+    string PesquisarEmail(int chave, int destinatario);
     void Limpa();
 };
+
 #endif
