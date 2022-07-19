@@ -7,16 +7,18 @@ using namespace std;
 
 class Email {
    private:
-    int id;
+    int id_email;
+    int id_destinatario;
     string mensagem;
 
     Email *esquerda;
     Email *direita;
-    Email *proximo;
 
    public:
-    Email(int id, string mensagem);
-    int GetId();
+    Email(int id_email, int id_destinatario, string mensagem);
+    int GetIdEmail();
+    int GetIdDestinatario();
+    string GetMensagem();
 
     friend class ArvoreBinaria;
 };
