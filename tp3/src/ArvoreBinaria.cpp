@@ -16,9 +16,9 @@ bool ArvoreBinaria::IsVazia() {
 
 void ArvoreBinaria::InserirRecursivo(Email *&p, Email *email) {
     if (p == nullptr) {
-        p = new Email(email->id, email->mensagem);
+        p = new Email(email->id_email, email->id_destinatario, email->mensagem);
     } else {
-        if (email->GetId() < p->GetId())
+        if (email->GetIdEmail() < p->GetIdEmail())
             InserirRecursivo(p->esquerda, email);
         else
             InserirRecursivo(p->direita, email);
@@ -31,21 +31,86 @@ void ArvoreBinaria::Inserir(Email *email) {
     tamanho++;
 }
 
+bool ArvoreBinaria::ApagarRecursivo(Email *&p, int chave) {
+    if (p == nullptr)
+        return false;
+
+    if (chave < p->GetIdEmail())
+        return ApagarRecursivo(p->esquerda, chave);
+    else if (chave > p->GetIdEmail())
+        return ApagarRecursivo(p->direita, chave);
+    else {
+        Email *temp_dir = p->direita;
+
+        if (p->direita == nullptr) {
+            Email *temp_esq = p->esquerda;
+            delete p;
+            p = temp_esq;
+        } else if (p->esquerda == nullptr) {
+            delete p;
+            p = temp_dir;
+        } else {
+            Email *proximo_pai = p;
+
+            while (temp_dir->esquerda != nullptr) {
+                proximo_pai = temp_dir;
+                temp_dir = temp_dir->esquerda;
+            }
+
+            if (proximo_pai != p)
+                proximo_pai->esquerda = temp_dir->direita;
+            else
+                proximo_pai->direita = temp_dir->direita;
+
+            delete temp_dir;
+        }
+    }
+
+    return true;
+}
+
+bool ArvoreBinaria::Apagar(int chave) {
+    tamanho--;
+
+    return ApagarRecursivo(raiz, chave);
+}
+
+int ArvoreBinaria::PesquisarRecursivo(Email *&p, int chave) {
+    if (p == nullptr)
+        return -1;
+
+    if (chave < p->GetIdEmail())
+        return PesquisarRecursivo(p->esquerda, chave);
+    else if (chave > p->GetIdEmail())
+        return PesquisarRecursivo(p->direita, chave);
+    else {
+        cout << "id: " << p->GetIdEmail() << endl;
+        return p->GetIdEmail();
+    }
+}
+
 int ArvoreBinaria::Pesquisar(int chave) {
     return PesquisarRecursivo(raiz, chave);
 }
 
-int ArvoreBinaria::PesquisarRecursivo(Email *&p, int chave) {
-    if (p == nullptr) {
-        return -1;
-    }
+string ArvoreBinaria::PesquisarEmailRecursivo(Email *&p, int chave, int destinatario) {
+    if (p == nullptr)
+        return "";
 
-    if (chave < p->GetId())
-        return PesquisarRecursivo(p->esquerda, chave);
-    else if (chave > p->GetId())
-        return PesquisarRecursivo(p->direita, chave);
-    else
-        return p->GetId();
+    if (chave < p->GetIdEmail())
+        return PesquisarEmailRecursivo(p->esquerda, chave, destinatario);
+    else if (chave > p->GetIdEmail())
+        return PesquisarEmailRecursivo(p->direita, chave, destinatario);
+    else {
+        if (p->GetIdDestinatario() == destinatario)
+            return p->GetMensagem();
+        else
+            return "";
+    }
+}
+
+string ArvoreBinaria::PesquisarEmail(int chave, int destinatario) {
+    return PesquisarEmailRecursivo(raiz, chave, destinatario);
 }
 
 void ArvoreBinaria::RemoverRecursivo(Email *p) {
@@ -54,47 +119,6 @@ void ArvoreBinaria::RemoverRecursivo(Email *p) {
         RemoverRecursivo(p->direita);
 
         delete p;
-    }
-}
-
-void ArvoreBinaria::Caminha(int tipo) {
-    switch (tipo) {
-        case 1:
-            PreOrdem(raiz);
-            cout << endl;
-            break;
-        case 2:
-            InOrdem(raiz);
-            cout << endl;
-            break;
-        case 3:
-            PosOrdem(raiz);
-            cout << endl;
-            break;
-    }
-}
-
-void ArvoreBinaria::PreOrdem(Email *p) {
-    if (p != nullptr) {
-        cout << " " << p->GetId() << " ";
-        PreOrdem(p->esquerda);
-        PreOrdem(p->direita);
-    }
-}
-
-void ArvoreBinaria::InOrdem(Email *p) {
-    if (p != nullptr) {
-        InOrdem(p->esquerda);
-        cout << " " << p->GetId() << " ";
-        InOrdem(p->direita);
-    }
-}
-
-void ArvoreBinaria::PosOrdem(Email *p) {
-    if (p != nullptr) {
-        PosOrdem(p->esquerda);
-        PosOrdem(p->direita);
-        cout << " " << p->GetId() << " ";
     }
 }
 
