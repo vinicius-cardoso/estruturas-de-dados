@@ -15,8 +15,10 @@ bool ArvoreBinaria::IsVazia() {
 }
 
 void ArvoreBinaria::InserirRecursivo(Email *&p, Email *email) {
+    // aloca espaco para um novo objeto do tipo email
     if (p == nullptr) {
         p = new Email(email->id_email, email->id_destinatario, email->mensagem);
+        // insere nos na arvore de maneira ordenada
     } else {
         if (email->GetIdEmail() < p->GetIdEmail())
             InserirRecursivo(p->esquerda, email);
@@ -52,6 +54,7 @@ bool ArvoreBinaria::ApagarRecursivo(Email *&p, int chave) {
         } else {
             Email *proximo_pai = p;
 
+            // enquanto nao chegar no ultimo elemento da esquerda
             while (temp_dir->esquerda != nullptr) {
                 proximo_pai = temp_dir;
                 temp_dir = temp_dir->esquerda;
@@ -84,7 +87,6 @@ int ArvoreBinaria::PesquisarRecursivo(Email *&p, int chave) {
     else if (chave > p->GetIdEmail())
         return PesquisarRecursivo(p->direita, chave);
     else {
-        cout << "id: " << p->GetIdEmail() << endl;
         return p->GetIdEmail();
     }
 }
@@ -102,6 +104,8 @@ string ArvoreBinaria::PesquisarEmailRecursivo(Email *&p, int chave, int destinat
     else if (chave > p->GetIdEmail())
         return PesquisarEmailRecursivo(p->direita, chave, destinatario);
     else {
+        // verifica se o email encontrado contem o identificador do destinatario
+        // caso nao haja, retorna uma string vazia
         if (p->GetIdDestinatario() == destinatario)
             return p->GetMensagem();
         else

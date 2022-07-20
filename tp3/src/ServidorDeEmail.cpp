@@ -103,6 +103,7 @@ void ServidorDeEmail::Iniciar(ifstream &arquivo_entrada, ofstream &arquivo_saida
             else
                 arquivo_saida << "ERRO: MENSAGEM INEXISTENTE" << endl;
         } else
+            // retorna uma excecao caso haja uma operacao diferentes das previstas
             throw "Erro: Operacao invalida no arquivo";
     }
 }

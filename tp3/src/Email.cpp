@@ -4,6 +4,7 @@ Email::Email(int id_email, int id_destinatario, string mensagem) {
     this->id_email = id_email;
     this->id_destinatario = id_destinatario;
     this->mensagem = mensagem;
+
     esquerda = nullptr;
     direita = nullptr;
 }
