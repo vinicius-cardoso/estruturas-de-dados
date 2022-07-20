@@ -5,7 +5,7 @@ BIN_FOLDER = ./bin/
 OBJ_FOLDER = ./obj/
 SRC_FOLDER = ./src/
 
-CXXFLAGS = -std=c++17
+CXXFLAGS = -std=c++17 -pg
 MAIN = main
 TARGET = run.out
 

@@ -1,15 +1,18 @@
 #include <getopt.h>
+#include <string.h>
 
 #include <fstream>
 #include <iostream>
 
 #include "ServidorDeEmail.hpp"
-#include "msgassert.hpp"
+#include "memlog.hpp"
 
 using namespace std;
 
 string nome_arquivo_entrada;
 string nome_arquivo_saida;
+// char logname[100];
+// bool regmem;
 
 void ParseArgs(int argc, char **argv) {
     // variaveis externas do getopt
@@ -19,7 +22,11 @@ void ParseArgs(int argc, char **argv) {
     // variavel auxiliar
     int opcao;
 
-    while ((opcao = getopt(argc, argv, "i:I:o:O")) != EOF) {
+    // opcoes
+    // regmem = false;
+    // logname[0] = 0;
+
+    while ((opcao = getopt(argc, argv, "i:I:o:O:p:l")) != EOF) {
         switch (opcao) {
             case 'i':
             case 'I':
@@ -35,6 +42,14 @@ void ParseArgs(int argc, char **argv) {
                 erroAssert(nome_arquivo_saida.length() > 0, "Erro: O arquivo de saida nao foi informado");
                 break;
 
+                // case 'p':
+                // strcpy(logname, optarg);
+                // break;
+
+                // case 'l':
+                // regmem = true;
+                // break;
+
             default:
                 exit(1);
         }
@@ -47,6 +62,12 @@ void ParseArgs(int argc, char **argv) {
 int main(int argc, char **argv) {
     // le os nomes do arquivo de entrada e arquivo de saida
     ParseArgs(argc, argv);
+
+    // inicia o registro de acesso
+    // iniciaMemLog(logname);
+
+    // ativa o registro de acesso
+    // ativaMemLog();
 
     ifstream arquivo_entrada(nome_arquivo_entrada);
 
@@ -65,5 +86,6 @@ int main(int argc, char **argv) {
 
     servidor_de_email->Iniciar(*&arquivo_entrada, *&arquivo_saida);
 
+    // return finalizaMemLog();
     return 0;
 }

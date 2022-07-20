@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "memlog.hpp"
+#include "msgassert.hpp"
+
 using namespace std;
 
 class Email {
