@@ -1,37 +1,23 @@
 #include "Pilha.hpp"
 
-template <class T>
-No<T>::No(T item) {
+No::No(int item) {
     this->item = item;
     this->proximo = nullptr;
 }
 
-template <class T>
-Pilha<T>::Pilha() {
+Pilha::Pilha() {
     topo = nullptr;
     tamanho = 0;
 }
 
-template <class T>
-Pilha<T>::~Pilha() {
-    Limpa();
+Pilha::~Pilha() {
+    Limpar();
 
     delete topo;
 }
 
-template <class T>
-bool Pilha<T>::IsVazia() {
-    return topo == nullptr;
-}
-
-template <class T>
-int Pilha<T>::GetTamanho() {
-    return tamanho;
-}
-
-template <class T>
-void Pilha<T>::Empilhar(T item) {
-    No<T> *novo = new No<T>(item);
+void Pilha::Empilhar(int item) {
+    No *novo = new No(item);
 
     if (topo == nullptr) {
         topo = novo;
@@ -43,13 +29,12 @@ void Pilha<T>::Empilhar(T item) {
     tamanho++;
 }
 
-template <class T>
-T Pilha<T>::Desempilhar() {
+int Pilha::Desempilhar() {
     if (topo == nullptr)
-        throw "Erro: Pilha vazia!";
+        throw "Erro: Pilha vazia";
 
-    No<T> *aux = topo;
-    T desempilhado = aux->item;
+    No *aux = topo;
+    int desempilhado = aux->item;
 
     topo = topo->proximo;
 
@@ -59,9 +44,8 @@ T Pilha<T>::Desempilhar() {
     return desempilhado;
 }
 
-template <class T>
-void Pilha<T>::Imprimir() {
-    No<T> *atual = topo;
+void Pilha::Imprimir() {
+    No *atual = topo;
 
     while (atual != nullptr) {
         cout << atual->item << " ";
@@ -72,9 +56,8 @@ void Pilha<T>::Imprimir() {
     cout << endl;
 }
 
-template <class T>
-void Pilha<T>::Limpa() {
-    No<T> *atual = topo;
+void Pilha::Limpar() {
+    No *atual = topo;
 
     while (atual->proximo != nullptr) {
         topo = atual->proximo;

@@ -1,38 +1,24 @@
 #include "Fila.hpp"
 
-template <class T>
-No<T>::No(T item) {
+No::No(int item) {
     this->item = item;
     this->proximo = nullptr;
 }
 
-template <class T>
-Fila<T>::Fila() {
+Fila::Fila() {
     primeiro = nullptr;
     ultimo = nullptr;
     tamanho = 0;
 }
 
-template <class T>
-Fila<T>::~Fila() {
+Fila::~Fila() {
     Limpar();
 
     delete primeiro;
 }
 
-template <class T>
-bool Fila<T>::IsVazia() {
-    return tamanho == 0;
-}
-
-template <class T>
-int Fila<T>::GetTamanho() {
-    return tamanho;
-}
-
-template <class T>
-void Fila<T>::Enfileirar(T item) {
-    No<T> *novo = new No<T>(item);
+void Fila::Enfileirar(int item) {
+    No *novo = new No(item);
 
     if (primeiro == nullptr) {
         primeiro = novo;
@@ -45,29 +31,26 @@ void Fila<T>::Enfileirar(T item) {
     tamanho++;
 }
 
-template <class T>
-T Fila<T>::Desenfileirar() {
-    if (tamanho == 0)
-        throw "Erro: Lista vazia";
+int Fila::Desenfileirar() {
+    if (primeiro == nullptr)
+        throw "Erro: Fila vazia";
 
-    int aux = primeiro->item;
-    No<T> *atual = primeiro;
+    No *aux = primeiro;
+    int desenfileirado = aux->item;
 
     primeiro = primeiro->proximo;
 
-    tamanho--;
-
-    if (tamanho == 1)
+    if (primeiro->proximo == nullptr)
         ultimo = primeiro;
 
-    delete atual;
+    delete aux;
+    tamanho--;
 
-    return aux;
+    return desenfileirado;
 }
 
-template <class T>
-void Fila<T>::Imprimir() {
-    No<T> *atual = primeiro;
+void Fila::Imprimir() {
+    No *atual = primeiro;
 
     while (atual != nullptr) {
         cout << atual->item << " ";
@@ -78,9 +61,8 @@ void Fila<T>::Imprimir() {
     cout << endl;
 }
 
-template <class T>
-void Fila<T>::Limpar() {
-    No<T> *atual = primeiro;
+void Fila::Limpar() {
+    No *atual = primeiro;
 
     while (atual->proximo != nullptr) {
         primeiro = atual->proximo;
