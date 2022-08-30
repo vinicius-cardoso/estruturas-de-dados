@@ -135,23 +135,14 @@ ImagemPPM *LerImagemPPM(string nome_arq_entrada) {
     return imagem_ppm;
 }
 
-void ConverterPPMparaPGM(ImagemPPM *imagem_ppm, string nome_arq_saida) {
+void EscreverImagemPGM(string nome_arq_saida, int largura, int altura, int *valores_R, int *valores_G, int *valores_B) {
     ofstream arq_saida(nome_arq_saida, ios::trunc);
-
-    int largura = imagem_ppm->GetLargura();
-    int altura = imagem_ppm->GetAltura();
-
-    ImagemPGM *imagem_pgm = new ImagemPGM(largura, altura);
-
-    int *valores_R = imagem_ppm->GetValoresR();
-    int *valores_G = imagem_ppm->GetValoresG();
-    int *valores_B = imagem_ppm->GetValoresB();
-
-    int *valores = new int[largura * altura];
 
     arq_saida << CODIGO_PGM << endl;
     arq_saida << largura << " " << altura << endl;
     arq_saida << VALOR_MAX_CINZA << endl;
+
+    int *valores = new int[largura * altura];
 
     int indice = 0;
 
@@ -168,6 +159,19 @@ void ConverterPPMparaPGM(ImagemPPM *imagem_ppm, string nome_arq_saida) {
 
         arq_saida << endl;
     }
+}
+
+void ConverterPPMparaPGM(ImagemPPM *imagem_ppm, string nome_arq_saida) {
+    int largura = imagem_ppm->GetLargura();
+    int altura = imagem_ppm->GetAltura();
+
+    ImagemPGM *imagem_pgm = new ImagemPGM(largura, altura);
+
+    int *valores_R = imagem_ppm->GetValoresR();
+    int *valores_G = imagem_ppm->GetValoresG();
+    int *valores_B = imagem_ppm->GetValoresB();
+
+    EscreverImagemPGM(nome_arq_saida, largura, altura, valores_R, valores_G, valores_B);
 }
 
 int main() {
