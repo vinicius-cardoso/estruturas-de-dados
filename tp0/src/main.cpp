@@ -19,8 +19,8 @@ const float VALOR_MAX_CINZA = 49;
 string nome_arq_entrada;
 string nome_arq_saida;
 
-char lognome[100];
-int regmem;
+// char lognome[100];
+// int regmem;
 
 ImagemPPM *LerImagemPPM(string nome_arq_entrada) {
     ifstream arq_entrada(nome_arq_entrada);
@@ -101,7 +101,7 @@ void ConverterPPMparaPGM(ImagemPPM *imagem_ppm, string nome_arq_saida) {
     int *valores_G = imagem_ppm->GetValoresG();
     int *valores_B = imagem_ppm->GetValoresB();
 
-    defineFaseMemLog(2);
+    // defineFaseMemLog(2);
     EscreverImagemPGM(nome_arq_saida, largura, altura, valores_R, valores_G, valores_B);
 }
 
@@ -111,12 +111,13 @@ void ParseArgs(int argc, char **argv) {
     extern int optind;
 
     // inicializacao variaveis globais para opcoes
-    regmem = 0;
-    lognome[0] = 0;
+    // regmem = 0;
+    // lognome[0] = 0;
 
     int opcao;
 
-    while ((opcao = getopt(argc, argv, "i:I:o:O:p:l")) != EOF) {
+    // while ((opcao = getopt(argc, argv, "i:I:o:O:p:l")) != EOF) {
+    while ((opcao = getopt(argc, argv, "i:I:o:O")) != EOF) {
         switch (opcao) {
             case 'i':
             case 'I':
@@ -132,13 +133,13 @@ void ParseArgs(int argc, char **argv) {
                 erroAssert(nome_arq_saida.length() > 0, "Erro: O arquivo de saida nao foi informado");
                 break;
 
-            case 'p':
-                strcpy(lognome, optarg);
-                break;
+                // case 'p':
+                // strcpy(lognome, optarg);
+                // break;
 
-            case 'l':
-                regmem = 1;
-                break;
+                // case 'l':
+                // regmem = 1;
+                // break;
 
             default:
                 exit(1);
@@ -154,23 +155,23 @@ int main(int argc, char **argv) {
     ParseArgs(argc, argv);
 
     // iniciar registro de acesso
-    iniciaMemLog(lognome);
+    // iniciaMemLog(lognome);
 
     // ativar ou nao o registro de acesso
-    if (regmem)
-        ativaMemLog();
-    else
-        desativaMemLog();
+    // if (regmem)
+    // ativaMemLog();
+    // else
+    // desativaMemLog();
 
     // ativa o registro de acesso
-    ativaMemLog();
+    // ativaMemLog();
 
-    defineFaseMemLog(0);
+    // defineFaseMemLog(0);
     ImagemPPM *imagem_ppm = LerImagemPPM(nome_arq_entrada);
 
-    defineFaseMemLog(1);
+    // defineFaseMemLog(1);
     ConverterPPMparaPGM(imagem_ppm, nome_arq_saida);
 
     // conclui registro de acesso
-    return finalizaMemLog();
+    // return finalizaMemLog();
 }
