@@ -25,6 +25,7 @@ class Pilha {
     Pilha();
     ~Pilha();
 
+    bool IsVazia();
     void Empilhar(int item);
     int Desempilhar();
     void Imprimir();

@@ -74,13 +74,6 @@ void Pilha<T>::Imprimir() {
 
 template <class T>
 void Pilha<T>::Limpa() {
-    No<T> *atual = topo;
-
-    while (atual->proximo != nullptr) {
-        topo = atual->proximo;
-        delete atual;
-        atual = topo->proximo;
-    }
-
-    tamanho = 0;
+    while (!IsVazia())
+        Desempilhar();
 }

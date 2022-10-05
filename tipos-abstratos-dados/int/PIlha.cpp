@@ -16,6 +16,10 @@ Pilha::~Pilha() {
     delete topo;
 }
 
+bool Pilha::IsVazia() {
+    return topo == nullptr;
+}
+
 void Pilha::Empilhar(int item) {
     No *novo = new No(item);
 
@@ -57,13 +61,6 @@ void Pilha::Imprimir() {
 }
 
 void Pilha::Limpar() {
-    No *atual = topo;
-
-    while (atual->proximo != nullptr) {
-        topo = atual->proximo;
-        delete atual;
-        atual = topo->proximo;
-    }
-
-    tamanho = 0;
+    while (!IsVazia())
+        Desempilhar();
 }
